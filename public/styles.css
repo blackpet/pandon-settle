@@ -36,7 +36,8 @@ html, body {
   color: var(--text);
   font-family: var(--fb);
   -webkit-font-smoothing: antialiased;
-  overscroll-behavior-y: contain;
+  /* overscroll-behavior 를 잠그지 않는다 — 주소창이 없는 홈 화면 앱에서
+     "당겨서 새로고침"이 유일한 탈출구다 */
 }
 
 /*
@@ -202,6 +203,29 @@ input  { font: inherit; color: inherit; }
 .foot button { font-size: 14px; color: var(--text-dim); display: flex; align-items: center; gap: 6px; min-height: 44px; }
 
 .crown { font-size: 13px; color: var(--accent); }
+
+/* 헤더의 더보기 — 어느 화면에서든 룰과 새로고침에 닿는 길 */
+.more { width: 44px; height: 44px; margin: -10px -10px -10px 0; border-radius: var(--radius);
+  display: grid; place-items: center; font-size: 19px; color: var(--text-dim); flex: none; }
+.bar-r { display: flex; align-items: center; gap: 6px; }
+
+.menu { display: flex; flex-direction: column; gap: 8px; }
+.menu button {
+  min-height: var(--tap-min); border-radius: var(--radius); border: 1px solid var(--border);
+  background: var(--surface); display: flex; align-items: center; gap: 12px; padding: 0 16px;
+  font-size: 15px; font-weight: 600; text-align: left;
+}
+.menu button .sub { font-size: 12px; color: var(--text-dim); font-weight: 400; margin-left: auto; }
+.menu button.danger { color: var(--lose); }
+
+.update {
+  margin: 12px 20px 0; padding: 13px 14px; border-radius: var(--radius);
+  background: rgba(255, 213, 77, .1); border: 1px solid rgba(255, 213, 77, .35);
+  display: flex; align-items: center; gap: 12px;
+}
+.update b { font-size: 14px; color: var(--accent); }
+.update button { margin-left: auto; min-height: 40px; padding: 0 14px; border-radius: var(--pill);
+  background: var(--accent); color: #12131A; font-size: 13px; font-weight: 600; flex: none; }
 
 /* 잔액 숫자 롤링 — 화면을 통째로 다시 그려도 이 노드는 살아남는다 (ui.js) */
 .amt.roll { animation: roll 300ms ease; }
