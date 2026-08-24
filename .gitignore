@@ -22,3 +22,6 @@ package-lock.json
 
 # 디자인 캔버스 산출물 — .dc.html 과 canvas.json 에서 다시 시드된다
 docs/design/*-screens.html
+
+# wrangler 로컬 상태
+.wrangler/
