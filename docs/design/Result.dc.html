@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <style>
+  :root{
+    --bg:#12131A; --surface:#1C1E28; --surface-2:#262A38; --border:#2A2D3A;
+    --text:#ECEDF2; --dim:#8B8FA3;
+    --win:#3DDC84; --lose:#FF6B6B; --even:#8B8FA3; --accent:#FFD54D;
+    --p1:#4DA3FF; --p2:#FFB84D; --p3:#B47DFF; --p4:#35D6C4; --p5:#FF7EC7;
+    --radius:14px; --pill:999px; --tap:56px;
+    --fd:"Hahmlet","Nanum Myeongjo",serif;
+    --fb:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    --fn:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#0B0C11;font-family:var(--fb);-webkit-font-smoothing:antialiased}
+  a{color:#FFD54D;text-decoration:none} a:hover{color:#FFE484}
+  .phone{width:390px;background:var(--bg);color:var(--text);display:flex;flex-direction:column;padding-bottom:28px}
+  .bar{display:flex;align-items:baseline;justify-content:space-between;padding:20px 20px 14px}
+  .bar h1{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:.03em;margin:0}
+  .meta{font-family:var(--fn);font-size:12px;color:var(--dim);letter-spacing:.02em}
+  .sect{padding:0 20px}
+  .label{font-size:13px;color:var(--dim);margin:0 0 10px;font-weight:500;display:flex;align-items:baseline;justify-content:space-between}
+  .num{font-family:var(--fn);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .win{color:var(--win)} .lose{color:var(--lose)} .even{color:var(--even)}
+  .row{display:flex;align-items:center;gap:10px}
+  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .bal{display:flex;align-items:center;gap:11px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+  .tag{width:4px;height:30px;border-radius:2px;flex:none}
+  .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;flex:none}
+  .nm{font-size:15px;font-weight:600;flex:1}
+  .amt{font-family:var(--fn);font-variant-numeric:tabular-nums;font-size:18px;font-weight:600;letter-spacing:-.02em}
+  .btn{min-height:var(--tap);border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--fb);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+  .btn.primary{background:var(--accent);color:#12131A;border-color:var(--accent);letter-spacing:.28em;text-indent:.28em}
+  .btn.ghost{background:transparent}
+  .who{min-height:var(--tap);border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;font-weight:600;color:var(--dim)}
+  .who.on{color:var(--text)}
+  .chip{min-height:44px;padding:0 13px;border-radius:var(--pill);border:1px solid var(--border);background:transparent;color:var(--dim);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+  .chip.on{background:var(--surface-2);color:var(--text);border-color:transparent;font-weight:600}
+  .pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .key{height:58px;border-radius:12px;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;font-family:var(--fn);font-size:21px;font-weight:500;color:var(--text)}
+  .key.act{background:var(--surface-2);border-color:transparent;color:var(--accent)}
+  .rc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+  .rc-h{padding:13px 16px 12px;display:flex;align-items:baseline;justify-content:space-between}
+  .tearwrap{position:relative;height:16px;display:flex;align-items:center}
+  .tearwrap::before,.tearwrap::after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:var(--bg);top:1px}
+  .tearwrap::before{left:-8px} .tearwrap::after{right:-8px}
+  .tear{flex:1;height:1px;background:repeating-linear-gradient(90deg,var(--border) 0 5px,transparent 5px 11px)}
+  .rc-b{padding:12px 16px 15px;display:flex;flex-direction:column;gap:11px}
+  .rc-l{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .rc-l .nm{font-size:14px;font-weight:500;color:var(--text)}
+  .foot{display:flex;justify-content:space-between;padding:18px 20px 0;margin-top:auto}
+  .foot span{font-size:14px;color:var(--dim);display:flex;align-items:center;gap:6px}
+  .divider{height:1px;background:var(--border);margin:22px 20px}
+  .field{height:var(--tap);border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px}
+  .field input{all:unset;flex:1;font-family:var(--fb);font-size:16px;color:var(--text)}
+  .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:5px}
+  .seg > div{min-height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:600;color:var(--dim)}
+  .seg > div.on{background:var(--surface-2);color:var(--text)}
+</style>
+</helmet>
+<div class="phone">
+  <div style="padding:28px 20px 0;text-align:center">
+    <p class="meta" style="margin:0">8월 24일 · 고스톱 24판</p>
+    <h1 style="font-family:var(--fd);font-weight:700;font-size:26px;letter-spacing:.06em;margin:10px 0 0">오늘의 결과</h1>
+  </div>
+
+  <div class="sect" style="margin-top:24px;display:flex;flex-direction:column;gap:8px">
+      <div class="bal">
+        <div class="tag" style="background:var(--p1)"></div>
+        <div class="av" style="background:var(--p1)22">🐶</div>
+        <div class="nm">재호</div>
+        <div class="amt win">+12,400</div>
+        <div style="font-size:17px">🤑</div>
+      </div>
+      <div class="bal">
+        <div class="tag" style="background:var(--p2)"></div>
+        <div class="av" style="background:var(--p2)22">🐱</div>
+        <div class="nm">철수</div>
+        <div class="amt win">+3,100</div>
+        <div style="font-size:17px">😏</div>
+      </div>
+      <div class="bal">
+        <div class="tag" style="background:var(--p3)"></div>
+        <div class="av" style="background:var(--p3)22">🐰</div>
+        <div class="nm">영희</div>
+        <div class="amt lose">-15,500</div>
+        <div style="font-size:17px">🫠</div>
+      </div>
+    <div style="text-align:right;padding:2px 4px 0"><span style="font-size:13px;color:var(--accent)">👑 오늘의 호구 · 영희</span></div>
+  </div>
+
+  <div class="sect" style="margin-top:26px">
+    <p class="label">이렇게 보내면 끝</p>
+    <div class="rc">
+      <div class="rc-h"><span class="meta">송금 2건</span><span class="meta">합 15,500원</span></div>
+      <div class="tearwrap"><div class="tear"></div></div>
+      <div class="rc-b" style="gap:14px">
+        <div class="rc-l">
+          <div class="nm">🐰 영희 <span style="color:var(--dim)">→</span> 🐶 재호</div>
+          <div class="amt" style="color:var(--accent)">12,400</div>
+        </div>
+        <div class="rc-l">
+          <div class="nm">🐰 영희 <span style="color:var(--dim)">→</span> 🐱 철수</div>
+          <div class="amt" style="color:var(--accent)">3,100</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sect" style="margin-top:26px">
+    <p class="label">누적 그래프<span style="font-size:12px">24판</span></p>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px">
+      <svg viewBox="0 0 350 120" width="100%" height="120" role="img" aria-label="세 사람의 누적 잔액 꺾은선 그래프">
+        <line x1="6" y1="54.4" x2="344" y2="54.4" stroke="#2A2D3A" stroke-width="1" stroke-dasharray="3 4"/>
+        <polyline points="6.0,54.4 54.3,51.2 102.6,44.8 150.9,46.9 199.1,39.4 247.4,30.1 295.7,20.8 344.0,10.0" fill="none" stroke="#4DA3FF" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="344.0" cy="10.0" r="3" fill="#4DA3FF"/>
+        <polyline points="6.0,54.4 54.3,57.7 102.6,57.7 150.9,52.7 199.1,52.7 247.4,48.0 295.7,45.1 344.0,43.3" fill="none" stroke="#FFB84D" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="344.0" cy="43.3" r="3" fill="#FFB84D"/>
+        <polyline points="6.0,54.4 54.3,54.4 102.6,60.9 150.9,63.8 199.1,71.3 247.4,85.3 295.7,97.5 344.0,110.0" fill="none" stroke="#B47DFF" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="344.0" cy="110.0" r="3" fill="#B47DFF"/>
+      </svg>
+      <div class="row" style="gap:14px;margin-top:10px;padding-left:2px">
+        <span style="font-size:12px;color:var(--dim)"><b style="color:var(--p1)">━</b> 재호</span>
+        <span style="font-size:12px;color:var(--dim)"><b style="color:var(--p2)">━</b> 철수</span>
+        <span style="font-size:12px;color:var(--dim)"><b style="color:var(--p3)">━</b> 영희</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sect" style="margin-top:26px">
+    <p class="label">오늘의 기록</p>
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div class="rc-l" style="padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+        <span style="font-size:14px;color:var(--dim)">최고 한 판</span><span style="font-size:14px;font-weight:600">재호 <span class="num">4,000</span>원</span></div>
+      <div class="rc-l" style="padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+        <span style="font-size:14px;color:var(--dim)">승률</span><span style="font-size:14px;font-weight:600">재호 <span class="num">45</span>%</span></div>
+      <div class="rc-l" style="padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+        <span style="font-size:14px;color:var(--dim)">피박 최다</span><span style="font-size:14px;font-weight:600">영희 <span class="num">6</span>회 💀</span></div>
+    </div>
+  </div>
+
+  <div class="sect" style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
+    <div class="btn primary" style="width:100%">텍스트로 공유</div>
+    <div class="btn ghost" style="width:100%">계속 치기</div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

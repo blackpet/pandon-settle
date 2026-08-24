@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <style>
+  :root{
+    --bg:#12131A; --surface:#1C1E28; --surface-2:#262A38; --border:#2A2D3A;
+    --text:#ECEDF2; --dim:#8B8FA3;
+    --win:#3DDC84; --lose:#FF6B6B; --even:#8B8FA3; --accent:#FFD54D;
+    --p1:#4DA3FF; --p2:#FFB84D; --p3:#B47DFF; --p4:#35D6C4; --p5:#FF7EC7;
+    --radius:14px; --pill:999px; --tap:56px;
+    --fd:"Hahmlet","Nanum Myeongjo",serif;
+    --fb:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    --fn:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#0B0C11;font-family:var(--fb);-webkit-font-smoothing:antialiased}
+  a{color:#FFD54D;text-decoration:none} a:hover{color:#FFE484}
+  .phone{width:390px;background:var(--bg);color:var(--text);display:flex;flex-direction:column;padding-bottom:28px}
+  .bar{display:flex;align-items:baseline;justify-content:space-between;padding:20px 20px 14px}
+  .bar h1{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:.03em;margin:0}
+  .meta{font-family:var(--fn);font-size:12px;color:var(--dim);letter-spacing:.02em}
+  .sect{padding:0 20px}
+  .label{font-size:13px;color:var(--dim);margin:0 0 10px;font-weight:500;display:flex;align-items:baseline;justify-content:space-between}
+  .num{font-family:var(--fn);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .win{color:var(--win)} .lose{color:var(--lose)} .even{color:var(--even)}
+  .row{display:flex;align-items:center;gap:10px}
+  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .bal{display:flex;align-items:center;gap:11px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+  .tag{width:4px;height:30px;border-radius:2px;flex:none}
+  .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;flex:none}
+  .nm{font-size:15px;font-weight:600;flex:1}
+  .amt{font-family:var(--fn);font-variant-numeric:tabular-nums;font-size:18px;font-weight:600;letter-spacing:-.02em}
+  .btn{min-height:var(--tap);border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--fb);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+  .btn.primary{background:var(--accent);color:#12131A;border-color:var(--accent);letter-spacing:.28em;text-indent:.28em}
+  .btn.ghost{background:transparent}
+  .who{min-height:var(--tap);border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;font-weight:600;color:var(--dim)}
+  .who.on{color:var(--text)}
+  .chip{min-height:44px;padding:0 13px;border-radius:var(--pill);border:1px solid var(--border);background:transparent;color:var(--dim);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+  .chip.on{background:var(--surface-2);color:var(--text);border-color:transparent;font-weight:600}
+  .pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .key{height:58px;border-radius:12px;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;font-family:var(--fn);font-size:21px;font-weight:500;color:var(--text)}
+  .key.act{background:var(--surface-2);border-color:transparent;color:var(--accent)}
+  .rc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+  .rc-h{padding:13px 16px 12px;display:flex;align-items:baseline;justify-content:space-between}
+  .tearwrap{position:relative;height:16px;display:flex;align-items:center}
+  .tearwrap::before,.tearwrap::after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:var(--bg);top:1px}
+  .tearwrap::before{left:-8px} .tearwrap::after{right:-8px}
+  .tear{flex:1;height:1px;background:repeating-linear-gradient(90deg,var(--border) 0 5px,transparent 5px 11px)}
+  .rc-b{padding:12px 16px 15px;display:flex;flex-direction:column;gap:11px}
+  .rc-l{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .rc-l .nm{font-size:14px;font-weight:500;color:var(--text)}
+  .foot{display:flex;justify-content:space-between;padding:18px 20px 0;margin-top:auto}
+  .foot span{font-size:14px;color:var(--dim);display:flex;align-items:center;gap:6px}
+  .divider{height:1px;background:var(--border);margin:22px 20px}
+  .field{height:var(--tap);border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px}
+  .field input{all:unset;flex:1;font-family:var(--fb);font-size:16px;color:var(--text)}
+  .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:5px}
+  .seg > div{min-height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:600;color:var(--dim)}
+  .seg > div.on{background:var(--surface-2);color:var(--text)}
+</style>
+</helmet>
+<div class="phone">
+  <div class="bar"><h1>우리 룰</h1><span class="meta">모임마다 다르니까</span></div>
+  <div class="sect"><p style="font-size:13px;color:var(--dim);margin:0 0 18px;line-height:1.6">여기서 바꾼 값은 <b style="color:var(--text)">다음 판부터</b> 적용됩니다. 이미 끝난 판의 금액은 그대로예요.</p></div>
+
+  <div class="sect">
+    <p class="label">🎴 고스톱</p>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">피박</div><div style="font-size:12px;color:var(--dim);margin-top:3px">승자가 피로 났고 그 사람 피가 5장 이하</div></div>
+      <div class="row" style="gap:0;background:var(--surface-2);border-radius:var(--pill);overflow:hidden">
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--dim);font-size:18px">−</div>
+        <div class="num" style="min-width:34px;text-align:center;font-size:15px;font-weight:600">×2</div>
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--text);font-size:18px">+</div>
+      </div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">광박</div><div style="font-size:12px;color:var(--dim);margin-top:3px">승자가 광으로 났고 그 사람이 광이 없음</div></div>
+      <div class="row" style="gap:0;background:var(--surface-2);border-radius:var(--pill);overflow:hidden">
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--dim);font-size:18px">−</div>
+        <div class="num" style="min-width:34px;text-align:center;font-size:15px;font-weight:600">×2</div>
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--text);font-size:18px">+</div>
+      </div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">멍박</div><div style="font-size:12px;color:var(--dim);margin-top:3px">승자 열끗 7장 이상, 그 사람은 열끗 없음</div></div>
+      <div class="row" style="gap:0;background:var(--surface-2);border-radius:var(--pill);overflow:hidden">
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--dim);font-size:18px">−</div>
+        <div class="num" style="min-width:34px;text-align:center;font-size:15px;font-weight:600">×2</div>
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--text);font-size:18px">+</div>
+      </div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">3고부터 2배</div><div style="font-size:12px;color:var(--dim);margin-top:3px">끄면 고는 점수만 1점씩 더합니다</div></div>
+      <div style="width:46px;height:28px;border-radius:999px;background:var(--accent);display:flex;align-items:center;justify-content:flex-end;padding:3px"><div style="width:22px;height:22px;border-radius:50%;background:#12131A"></div></div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">흔들기</div><div style="font-size:12px;color:var(--dim);margin-top:3px">1회당 곱하는 배수</div></div>
+      <div class="row" style="gap:0;background:var(--surface-2);border-radius:var(--pill);overflow:hidden">
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--dim);font-size:18px">−</div>
+        <div class="num" style="min-width:34px;text-align:center;font-size:15px;font-weight:600">×2</div>
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--text);font-size:18px">+</div>
+      </div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">고박</div><div style="font-size:12px;color:var(--dim);margin-top:3px">고 부르고 지면 혼자 뒤집어씀</div></div>
+      <div style="width:46px;height:28px;border-radius:999px;background:var(--accent);display:flex;align-items:center;justify-content:flex-end;padding:3px"><div style="width:22px;height:22px;border-radius:50%;background:#12131A"></div></div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">점수 상한</div><div style="font-size:12px;color:var(--dim);margin-top:3px">개인 배수를 곱하기 전에 걸립니다</div></div>
+      <div class="chip">없음</div>
+    </div>
+    </div>
+  </div>
+
+  <div class="sect" style="margin-top:26px">
+    <p class="label">🃏 훌라</p>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">독박</div><div style="font-size:12px;color:var(--dim);margin-top:3px">한 장도 못 내려놓고 끝남</div></div>
+      <div class="row" style="gap:0;background:var(--surface-2);border-radius:var(--pill);overflow:hidden">
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--dim);font-size:18px">−</div>
+        <div class="num" style="min-width:34px;text-align:center;font-size:15px;font-weight:600">×2</div>
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--text);font-size:18px">+</div>
+      </div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">독박 점수 계산</div><div style="font-size:12px;color:var(--dim);margin-top:3px">남은 점수 그대로 · 고정 30점</div></div>
+      <div class="row" style="gap:6px"><div class="chip on">그대로</div><div class="chip">30점</div></div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">훌라</div><div style="font-size:12px;color:var(--dim);margin-top:3px">한 번에 다 내려놓고 남</div></div>
+      <div class="row" style="gap:0;background:var(--surface-2);border-radius:var(--pill);overflow:hidden">
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--dim);font-size:18px">−</div>
+        <div class="num" style="min-width:34px;text-align:center;font-size:15px;font-weight:600">×4</div>
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--text);font-size:18px">+</div>
+      </div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">7포카드</div><div style="font-size:12px;color:var(--dim);margin-top:3px">숫자 7 카드 넉 장</div></div>
+      <div class="row" style="gap:8px"><span style="font-size:13px;color:var(--dim)">안 씀</span><div style="width:46px;height:28px;border-radius:999px;background:var(--surface-2);display:flex;align-items:center;padding:3px"><div style="width:22px;height:22px;border-radius:50%;background:var(--dim)"></div></div></div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">스톱박</div><div style="font-size:12px;color:var(--dim);margin-top:3px">스톱 불렀는데 더 낮은 사람이 있음</div></div>
+      <div class="row" style="gap:0;background:var(--surface-2);border-radius:var(--pill);overflow:hidden">
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--dim);font-size:18px">−</div>
+        <div class="num" style="min-width:34px;text-align:center;font-size:15px;font-weight:600">×2</div>
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--text);font-size:18px">+</div>
+      </div>
+    </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">대빵/소빵</div><div style="font-size:12px;color:var(--dim);margin-top:3px">등록 없이 83점 이상 · 15점 이하</div></div>
+      <div class="row" style="gap:0;background:var(--surface-2);border-radius:var(--pill);overflow:hidden">
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--dim);font-size:18px">−</div>
+        <div class="num" style="min-width:34px;text-align:center;font-size:15px;font-weight:600">×2</div>
+        <div style="width:38px;height:36px;display:grid;place-items:center;color:var(--text);font-size:18px">+</div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="sect" style="margin-top:26px">
+    <p class="label">♠️ 포커</p>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">반반이 안 나눠떨어지면</div><div style="font-size:12px;color:var(--dim);margin-top:3px">1원은 딴 사람이 덜 받습니다</div></div>
+      <div class="row" style="gap:6px"><div class="chip on">딴 사람</div><div class="chip">잃은 사람</div></div>
+    </div>
+    </div>
+  </div>
+
+  <div class="sect" style="margin-top:26px">
+    <div class="btn ghost" style="width:100%">기본값으로 되돌리기</div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

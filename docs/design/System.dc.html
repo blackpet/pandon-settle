@@ -1,0 +1,293 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <style>
+  :root{
+    --bg:#12131A; --surface:#1C1E28; --surface-2:#262A38; --border:#2A2D3A;
+    --text:#ECEDF2; --dim:#8B8FA3;
+    --win:#3DDC84; --lose:#FF6B6B; --even:#8B8FA3; --accent:#FFD54D;
+    --p1:#4DA3FF; --p2:#FFB84D; --p3:#B47DFF; --p4:#35D6C4; --p5:#FF7EC7;
+    --radius:14px; --pill:999px; --tap:56px;
+    --fd:"Hahmlet","Nanum Myeongjo",serif;
+    --fb:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    --fn:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#0B0C11;font-family:var(--fb);-webkit-font-smoothing:antialiased}
+  a{color:#FFD54D;text-decoration:none} a:hover{color:#FFE484}
+  .phone{width:390px;background:var(--bg);color:var(--text);display:flex;flex-direction:column;padding-bottom:28px}
+  .bar{display:flex;align-items:baseline;justify-content:space-between;padding:20px 20px 14px}
+  .bar h1{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:.03em;margin:0}
+  .meta{font-family:var(--fn);font-size:12px;color:var(--dim);letter-spacing:.02em}
+  .sect{padding:0 20px}
+  .label{font-size:13px;color:var(--dim);margin:0 0 10px;font-weight:500;display:flex;align-items:baseline;justify-content:space-between}
+  .num{font-family:var(--fn);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .win{color:var(--win)} .lose{color:var(--lose)} .even{color:var(--even)}
+  .row{display:flex;align-items:center;gap:10px}
+  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .bal{display:flex;align-items:center;gap:11px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+  .tag{width:4px;height:30px;border-radius:2px;flex:none}
+  .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;flex:none}
+  .nm{font-size:15px;font-weight:600;flex:1}
+  .amt{font-family:var(--fn);font-variant-numeric:tabular-nums;font-size:18px;font-weight:600;letter-spacing:-.02em}
+  .btn{min-height:var(--tap);border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--fb);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+  .btn.primary{background:var(--accent);color:#12131A;border-color:var(--accent);letter-spacing:.28em;text-indent:.28em}
+  .btn.ghost{background:transparent}
+  .who{min-height:var(--tap);border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;font-weight:600;color:var(--dim)}
+  .who.on{color:var(--text)}
+  .chip{min-height:44px;padding:0 13px;border-radius:var(--pill);border:1px solid var(--border);background:transparent;color:var(--dim);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+  .chip.on{background:var(--surface-2);color:var(--text);border-color:transparent;font-weight:600}
+  .pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .key{height:58px;border-radius:12px;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;font-family:var(--fn);font-size:21px;font-weight:500;color:var(--text)}
+  .key.act{background:var(--surface-2);border-color:transparent;color:var(--accent)}
+  .rc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+  .rc-h{padding:13px 16px 12px;display:flex;align-items:baseline;justify-content:space-between}
+  .tearwrap{position:relative;height:16px;display:flex;align-items:center}
+  .tearwrap::before,.tearwrap::after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:var(--bg);top:1px}
+  .tearwrap::before{left:-8px} .tearwrap::after{right:-8px}
+  .tear{flex:1;height:1px;background:repeating-linear-gradient(90deg,var(--border) 0 5px,transparent 5px 11px)}
+  .rc-b{padding:12px 16px 15px;display:flex;flex-direction:column;gap:11px}
+  .rc-l{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .rc-l .nm{font-size:14px;font-weight:500;color:var(--text)}
+  .foot{display:flex;justify-content:space-between;padding:18px 20px 0;margin-top:auto}
+  .foot span{font-size:14px;color:var(--dim);display:flex;align-items:center;gap:6px}
+  .divider{height:1px;background:var(--border);margin:22px 20px}
+  .field{height:var(--tap);border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px}
+  .field input{all:unset;flex:1;font-family:var(--fb);font-size:16px;color:var(--text)}
+  .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:5px}
+  .seg > div{min-height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:600;color:var(--dim)}
+  .seg > div.on{background:var(--surface-2);color:var(--text)}
+
+  .sheet{width:1240px;background:var(--bg);color:var(--text);padding:56px 56px 64px}
+  .sh-h{font-family:var(--fd);font-weight:700;font-size:15px;letter-spacing:.16em;text-indent:.16em;color:var(--accent);margin:0 0 4px}
+  .sh-s{font-size:13px;color:var(--dim);margin:0 0 20px;line-height:1.6;max-width:640px}
+  .block{margin-top:52px}
+  .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  .sw{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+  .sw-c{height:76px}
+  .sw-b{padding:11px 13px 13px}
+  .sw-n{font-size:13px;font-weight:600}
+  .sw-v{font-family:var(--fn);font-size:11px;color:var(--dim);margin-top:3px;letter-spacing:.02em}
+  .sw-u{font-size:11px;color:var(--dim);margin-top:7px;line-height:1.5}
+  .spec{font-family:var(--fn);font-size:11px;color:var(--dim);letter-spacing:.02em}
+  table{border-collapse:collapse;width:100%}
+  td,th{text-align:left;padding:11px 12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+  th{font-size:11px;color:var(--dim);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+  .demo{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+  .demo-l{font-size:11px;color:var(--dim);letter-spacing:.04em;margin:0 0 13px;text-transform:uppercase}
+  .cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+</style>
+</helmet>
+<div class="sheet">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:22px">
+    <div>
+      <h1 style="font-family:var(--fd);font-weight:700;font-size:30px;letter-spacing:.14em;text-indent:.14em;margin:0">판돈정산 디자인 시스템</h1>
+      <p style="font-size:13px;color:var(--dim);margin:11px 0 0">어두운 방에서 술 마시며 한 손으로 쓴다 — 모든 규격이 이 한 문장에서 나온다</p>
+    </div>
+    <div class="spec">토큰 · 타이포 · 규격<br>SPEC.md 9장 정본</div>
+  </div>
+
+  <div class="block">
+    <p class="sh-h">색</p>
+    <p class="sh-s">다크 고정이다. 라이트 테마를 만들지 않는다 — 밤에만 쓰는 앱이라 두 벌을 유지할 이유가 없다. 스와치 위 숫자는 <b style="color:var(--text)">--surface 위에서의 대비비</b>이고, 전부 WCAG AA(4.5:1)를 넘는다.</p>
+
+    <p class="demo-l" style="margin-top:26px">바탕</p>
+    <div class="cards">
+            <div class="sw">
+        <div class="sw-c" style="background:#12131A;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#ECEDF2;opacity:.72">—</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--bg</div><div class="sw-v">#12131A</div><div class="sw-u">앱 바탕. 영수증 절취선의 노치도 이 색으로 뚫는다</div></div>
+      </div>
+            <div class="sw">
+        <div class="sw-c" style="background:#1C1E28;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#ECEDF2;opacity:.72">—</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--surface</div><div class="sw-v">#1C1E28</div><div class="sw-u">카드·필드·키패드 키</div></div>
+      </div>
+            <div class="sw">
+        <div class="sw-c" style="background:#262A38;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#ECEDF2;opacity:.72">—</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--surface-2</div><div class="sw-v">#262A38</div><div class="sw-u">켜진 칩, 눌린 키, 스테퍼 트랙</div></div>
+      </div>
+            <div class="sw">
+        <div class="sw-c" style="background:#2A2D3A;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#ECEDF2;opacity:.72">—</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--border</div><div class="sw-v">#2A2D3A</div><div class="sw-u">1px 테두리, 구분선, 점선 절취선</div></div>
+      </div>
+    </div>
+
+    <p class="demo-l" style="margin-top:22px">글자</p>
+    <div class="cards">
+            <div class="sw">
+        <div class="sw-c" style="background:#ECEDF2;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">14.19</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--text</div><div class="sw-v">#ECEDF2</div><div class="sw-u">본문·금액</div></div>
+      </div>
+            <div class="sw">
+        <div class="sw-c" style="background:#8B8FA3;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">5.18</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--dim</div><div class="sw-v">#8B8FA3</div><div class="sw-u">라벨·설명·꺼진 칩</div></div>
+      </div>
+            <div class="sw">
+        <div class="sw-c" style="background:#FFD54D;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">11.75</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--accent</div><div class="sw-v">#FFD54D</div><div class="sw-u">확인 버튼, 송금 금액, 포커스 링</div></div>
+      </div>
+            <div class="sw">
+        <div class="sw-c" style="background:#8B8FA3;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">5.18</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--even</div><div class="sw-v">#8B8FA3</div><div class="sw-u">본전 0원</div></div>
+      </div>
+    </div>
+
+    <p class="demo-l" style="margin-top:22px">승패</p>
+    <div class="cards">
+            <div class="sw">
+        <div class="sw-c" style="background:#3DDC84;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">9.30</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--win</div><div class="sw-v">#3DDC84</div><div class="sw-u">플러스 금액</div></div>
+      </div>
+            <div class="sw">
+        <div class="sw-c" style="background:#FF6B6B;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">5.98</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--lose</div><div class="sw-v">#FF6B6B</div><div class="sw-u">마이너스 금액, 💀 배수 맞은 표시</div></div>
+      </div>
+            <div class="sw">
+        <div class="sw-c" style="background:#4DA3FF;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">6.32</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--p1 재호</div><div class="sw-v">#4DA3FF</div><div class="sw-u">1번 플레이어 — 태그·아바타·그래프 선</div></div>
+      </div>
+            <div class="sw">
+        <div class="sw-c" style="background:#FFB84D;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">9.65</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--p2 철수</div><div class="sw-v">#FFB84D</div><div class="sw-u">2번 플레이어</div></div>
+      </div>
+    </div>
+    <div class="cards" style="margin-top:14px">
+            <div class="sw">
+        <div class="sw-c" style="background:#B47DFF;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">5.78</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--p3 영희</div><div class="sw-v">#B47DFF</div><div class="sw-u">3번 플레이어</div></div>
+      </div>
+      <div class="sw">
+        <div class="sw-c" style="background:#35D6C4;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">9.14</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--p4 민수</div><div class="sw-v">#35D6C4</div><div class="sw-u">4번 — 4명 이상일 때만 나온다</div></div>
+      </div>
+      <div class="sw">
+        <div class="sw-c" style="background:#FF7EC7;display:flex;align-items:flex-end;padding:9px 11px">
+          <span style="font-family:var(--fn);font-size:11px;color:#12131A;opacity:.72">7.16</span>
+        </div>
+        <div class="sw-b"><div class="sw-n">--p5 지연</div><div class="sw-v">#FF7EC7</div><div class="sw-u">5번 — 승패색과 안 겹치게 고른 색상각</div></div>
+      </div>
+      <div class="sw" style="grid-column:span 4">
+        <div class="sw-b" style="padding:16px 18px">
+          <div class="sw-n">플레이어 색은 세 곳에서 똑같이 쓴다 · 2~5명</div>
+          <div class="sw-u" style="font-size:12px;margin-top:8px;line-height:1.7">잔액 카드 왼쪽 태그 · 아바타 배경(색 + 13% 알파) · 누적 그래프 선. 이름을 못 읽어도 색으로 자기 줄을 찾는다.<br>승자로 선택된 버튼은 그 사람 색으로 테두리와 10% 배경을 칠한다 — 선택을 색이 아닌 <b style="color:var(--text)">굵기와 밝기</b>로도 알 수 있게 한다.<br><b style="color:var(--text)">색은 자리 순서대로 배정한다</b> — 3명이면 p1~p3 만 쓰이고, 5명이 되면 틸과 핑크가 뒤에 붙는다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <p class="sh-h">글꼴</p>
+    <p class="sh-s">셋뿐이고 역할이 겹치지 않는다. 본문은 웹폰트를 쓰지 않는다 — 오프라인에서 먼저 떠야 하고, 한글 본문 웹폰트는 그 대가가 크다.</p>
+    <div class="cols3" style="margin-top:22px">
+      <div class="demo">
+        <p class="demo-l">Hahmlet · 표제</p>
+        <div style="font-family:var(--fd);font-weight:700;font-size:30px;letter-spacing:.14em;text-indent:.14em">판돈정산</div>
+        <div style="font-family:var(--fd);font-weight:500;font-size:14px;color:var(--dim);margin-top:12px">동전은 없어도 계산은 정확하게</div>
+        <div class="spec" style="margin-top:14px;line-height:1.7">앱 이름 · 화면 제목 · 결과 헤드라인<br>500/700 · 자간 .03~.22em<br>낡은 화투장 라벨의 활자에서 왔다</div>
+      </div>
+      <div class="demo">
+        <p class="demo-l">시스템 한글 · 본문</p>
+        <div style="font-size:22px;font-weight:600">누가 났어?</div>
+        <div style="font-size:15px;font-weight:600;margin-top:9px">철수 · 피박 · 확인</div>
+        <div style="font-size:13px;color:var(--dim);margin-top:9px">해당될 때만 누르세요</div>
+        <div class="spec" style="margin-top:14px;line-height:1.7">-apple-system → Apple SD Gothic Neo<br>→ Malgun Gothic → Noto Sans KR<br>13/15/16/22 · 400/500/600</div>
+      </div>
+      <div class="demo">
+        <p class="demo-l">IBM Plex Mono · 숫자</p>
+        <div class="num" style="font-size:30px;font-weight:600;color:var(--win)">+12,400</div>
+        <div class="num" style="font-size:18px;font-weight:600;color:var(--lose);margin-top:7px">-1,800</div>
+        <div class="spec" style="margin-top:14px;line-height:1.7">금액 · 점수 · 키패드 · 시각<br>font-variant-numeric: tabular-nums<br>자릿수가 고정돼 갱신될 때<br>레이아웃이 흔들리지 않는다</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <p class="sh-h">치수</p>
+    <p class="sh-s">한 손 엄지로, 흔들리는 상 위에서 누른다. 그래서 최소 탭 타겟이 큰 편이다.</p>
+    <div class="cols2" style="margin-top:22px">
+      <div class="demo">
+        <p class="demo-l">간격 · 반경 · 탭 타겟</p>
+        <table>
+          <tr><th>토큰</th><th>값</th><th>쓰는 곳</th></tr>
+          <tr><td class="num">--tap-min</td><td class="num">56px</td><td>확인·시작·승자 선택 — 실수하면 판이 틀어지는 것</td></tr>
+          <tr><td class="num">칩</td><td class="num">44px</td><td>피박·독박 같은 보조 배수. 최소 44는 지킨다</td></tr>
+          <tr><td class="num">키패드 키</td><td class="num">58px</td><td>3×4 그리드, gap 8</td></tr>
+          <tr><td class="num">--radius</td><td class="num">14px</td><td>카드·버튼·필드. 키패드 키만 12</td></tr>
+          <tr><td class="num">--pill</td><td class="num">999px</td><td>칩·스테퍼</td></tr>
+          <tr><td class="num">화면 좌우</td><td class="num">20px</td><td>모든 화면 공통</td></tr>
+          <tr><td class="num">잔액 줄</td><td class="num">2~5개</td><td>인원만큼. 5명이어도 접거나 스크롤하지 않는다</td></tr>
+          <tr><td class="num">섹션 간격</td><td class="num">22~26px</td><td>덩어리 사이. 안쪽 줄 간격은 8~10</td></tr>
+        </table>
+      </div>
+      <div class="demo">
+        <p class="demo-l">금액 표기</p>
+        <table>
+          <tr><th>상황</th><th>표기</th></tr>
+          <tr><td>플러스</td><td class="num win">+2,700</td></tr>
+          <tr><td>마이너스</td><td class="num lose">-1,800</td></tr>
+          <tr><td>본전</td><td class="num even">0</td></tr>
+          <tr><td>송금액</td><td class="num" style="color:var(--accent)">12,400</td></tr>
+        </table>
+        <div class="spec" style="margin-top:16px;line-height:1.8">부호는 항상 붙인다. 송금액만 부호 없이 accent — 보낼 돈은 잔액이 아니라 <b style="color:var(--text)">할 일</b>이라서 다르게 보인다.<br>천 단위 쉼표. "원"은 화면에서 생략하고 공유 텍스트에만 붙인다.<br>모든 금액은 정수. 0은 <span class="num even">0</span>이지 <span class="num even">-0</span>이 아니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <p class="sh-h">시그니처 · 영수증</p>
+    <p class="sh-s">이 앱이 기억에 남는 한 가지. 입력 화면의 <b style="color:var(--text)">미리보기</b>와 정산 화면의 <b style="color:var(--text)">송금 목록</b>이 같은 물건이다 — 절취선 위는 무슨 판이었는지, 아래는 얼마인지. 칩을 누를 때마다 아래쪽 숫자만 바뀌므로 시선이 확인 버튼을 떠나지 않는다. 나머지 화면은 조용하게 두고 개성은 여기에만 쓴다.</p>
+    <div class="cols2" style="margin-top:22px;align-items:start">
+      <div class="rc">
+        <div class="rc-h"><span class="meta">이번 판</span><span class="meta">7점 · 2고 · 철수 피박</span></div>
+        <div class="tearwrap"><div class="tear"></div></div>
+        <div class="rc-b">
+          <div class="rc-l"><div class="nm">🐶 재호</div><div class="amt win">+2,700</div></div>
+          <div class="rc-l"><div class="nm">🐱 철수 <span style="color:var(--lose);font-size:12px">💀 피박</span></div><div class="amt lose">-1,800</div></div>
+          <div class="rc-l"><div class="nm">🐰 영희</div><div class="amt lose">-900</div></div>
+        </div>
+      </div>
+      <div class="demo">
+        <p class="demo-l">만드는 법</p>
+        <div class="spec" style="line-height:1.9">머리 <span style="color:var(--text)">13/16px</span> — 왼쪽에 맥락, 오른쪽에 이번 판 요약<br>절취선 <span style="color:var(--text)">repeating-linear-gradient(90deg, --border 0 5px, transparent 5px 11px)</span><br>노치 <span style="color:var(--text)">14px 원 두 개를 --bg 로 좌우에 반쯤 걸쳐 뚫는다</span><br>몸통 <span style="color:var(--text)">이름 14px / 금액 18px mono</span> · 줄 간격 11<br><br>⚠️ 노치가 보이려면 <span style="color:var(--text)">overflow 를 잘라내지 않아야 한다</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
