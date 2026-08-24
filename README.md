@@ -6,6 +6,10 @@
 
 <sub>"동전은 없어도 계산은 정확하게"</sub>
 
+### 👉 [pandon.blackpet.workers.dev](https://pandon.blackpet.workers.dev)
+
+<sub>설치 없이 링크만 열면 됩니다 · 폰에서 "홈 화면에 추가"하면 앱처럼 씁니다</sub>
+
 ![status](https://img.shields.io/badge/tests-108%20passing-3DDC84?style=flat-square)
 ![players](https://img.shields.io/badge/players-2~5-B47DFF?style=flat-square)
 ![stack](https://img.shields.io/badge/stack-Vanilla%20JS%20%C2%B7%20No%20Build-4DA3FF?style=flat-square)
@@ -64,9 +68,13 @@
 
 ## 해보기
 
+**[pandon.blackpet.workers.dev](https://pandon.blackpet.workers.dev)** 를 열면 바로 칠 수 있습니다.
+직접 돌리려면:
+
 ```bash
 npx serve public      # 열어서 바로 치기 (빌드 없음)
 npm test              # 계산·저장·그래프 108개
+npx wrangler deploy   # Cloudflare 배포. --env 없이 한 줄
 ```
 
 한 판은 **`누가 났어? → 몇 점? → 확인`** 세 번입니다. 피박·고박 같은 배수 칩은
@@ -146,7 +154,7 @@ export function balances(rounds, n) {
 | 테스트 | `node --test` | 계산·저장·그래프 108개. DOM 테스트는 없고 화면은 눈으로 본다 |
 | 글꼴 | 표제만 웹폰트 | 본문은 시스템 한글 — 오프라인에서 먼저 떠야 한다 |
 | PWA | `manifest.json` + `sw.js` | 홈화면 추가 · 오프라인 동작 |
-| 배포 | Cloudflare Workers 정적 자산 | `wrangler deploy` 한 줄. Worker 코드는 없다 |
+| 배포 | Cloudflare Workers 정적 자산 | `wrangler deploy` 한 줄. Worker 코드는 한 줄도 없다 |
 
 ---
 
