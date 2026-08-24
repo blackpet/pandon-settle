@@ -34,13 +34,19 @@
 ## 현재 상태
 
 > [!IMPORTANT]
-> 이 저장소는 지금 **설계 명세(spec)만 완성된 단계**입니다. 구현 코드는 아직 없습니다.
-> [`SPEC.md`](./SPEC.md) 에 데이터 모델·계산 공식·화면 명세·검증된 테스트 기대값까지
-> 전부 적혀 있어서, 사람이든 AI 에이전트든 그대로 읽고 구현을 시작할 수 있습니다.
+> 이 저장소는 지금 **문서만 완성된 단계**입니다. 구현 코드는 아직 없습니다.
+> 문서는 두 편이고 역할이 다릅니다.
+>
+> - [`SPEC.md`](./SPEC.md) — **무엇을 만드는가.** 데이터 모델·계산 공식·화면 명세·검증된 테스트 기대값
+> - [`설계서`](./docs/superpowers/specs/2026-08-24-pandon-settle-design.md) — **어떤 구조로 만들고 어디에 올리는가.**
+>   웹앱 대 네이티브 앱, 모듈 경계, 저장 방식, Cloudflare 배포 형상, 3일 일정
+>
+> 사람이든 AI 에이전트든 이 둘을 읽고 바로 구현을 시작할 수 있습니다.
 
 | 단계 | 상태 |
 |---|:---:|
 | 설계 명세 (`SPEC.md`) | ✅ |
+| 아키텍처·배포 설계서 | ✅ |
 | 정산 알고리즘 `settle.js` + 테스트 | ⏳ |
 | 게임별 계산 `rules.js` + 테스트 | ⏳ |
 | 저장/복원 `store.js` | ⏳ |
@@ -121,18 +127,21 @@ export function balances(rounds, n = 3) {
 
 ```
 pandon-settle/
-├── SPEC.md              ← 설계 명세 (지금은 이것만 있음)
-├── index.html
-├── styles.css
-├── manifest.json
-├── sw.js
-├── src/
-│   ├── rules.js         ← 게임별 점수→금액 계산 (순수 함수)
-│   ├── settle.js        ← 최소 송금 정산 알고리즘 (순수 함수)
-│   ├── store.js         ← localStorage 저장/복원/마이그레이션
-│   ├── chart.js         ← SVG 누적 그래프
-│   └── ui.js            ← 화면 렌더링 · 이벤트
-└── test/
+├── SPEC.md              ← 기능 명세
+├── docs/superpowers/specs/   ← 아키텍처·배포 설계서
+├── wrangler.jsonc       ← Cloudflare 배포 형상
+├── public/              ← 이 폴더만 배포된다
+│   ├── index.html
+│   ├── styles.css
+│   ├── manifest.json
+│   ├── sw.js
+│   └── src/
+│       ├── rules.js     ← 게임별 점수→금액 계산 (순수 함수)
+│       ├── settle.js    ← 최소 송금 정산 알고리즘 (순수 함수)
+│       ├── store.js     ← localStorage 저장/복원/마이그레이션
+│       ├── chart.js     ← SVG 누적 그래프
+│       └── ui.js        ← 화면 렌더링 · 이벤트
+└── test/                ← 배포되지 않음
     ├── rules.test.js
     └── settle.test.js
 ```
@@ -252,7 +261,7 @@ export function settle(balances) {
 
 ## 구현하려면
 
-[`SPEC.md`](./SPEC.md) 의 10장에 순서가 정해져 있습니다. 요약하면:
+[설계서](./docs/superpowers/specs/2026-08-24-pandon-settle-design.md) 6장에 3일치 일정이, [`SPEC.md`](./SPEC.md) 10장에 구현 순서가 있습니다. 요약하면:
 
 1. **`settle.js` + 테스트** — 가장 중요하고 가장 짧습니다
 2. **`rules.js` + 테스트** — 게임 3종 계산. **UI 없이 테스트만으로 완성**시킬 것
