@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <style>
+  :root{
+    --bg:#12131A; --surface:#1C1E28; --surface-2:#262A38; --border:#2A2D3A;
+    --text:#ECEDF2; --dim:#8B8FA3;
+    --win:#3DDC84; --lose:#FF6B6B; --even:#8B8FA3; --accent:#FFD54D;
+    --p1:#4DA3FF; --p2:#FFB84D; --p3:#B47DFF; --p4:#35D6C4; --p5:#FF7EC7;
+    --radius:14px; --pill:999px; --tap:56px;
+    --fd:"Hahmlet","Nanum Myeongjo",serif;
+    --fb:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    --fn:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#0B0C11;font-family:var(--fb);-webkit-font-smoothing:antialiased}
+  a{color:#FFD54D;text-decoration:none} a:hover{color:#FFE484}
+  .phone{width:390px;background:var(--bg);color:var(--text);display:flex;flex-direction:column;padding-bottom:28px}
+  .bar{display:flex;align-items:baseline;justify-content:space-between;padding:20px 20px 14px}
+  .bar h1{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:.03em;margin:0}
+  .meta{font-family:var(--fn);font-size:12px;color:var(--dim);letter-spacing:.02em}
+  .sect{padding:0 20px}
+  .label{font-size:13px;color:var(--dim);margin:0 0 10px;font-weight:500;display:flex;align-items:baseline;justify-content:space-between}
+  .num{font-family:var(--fn);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .win{color:var(--win)} .lose{color:var(--lose)} .even{color:var(--even)}
+  .row{display:flex;align-items:center;gap:10px}
+  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .bal{display:flex;align-items:center;gap:11px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+  .tag{width:4px;height:30px;border-radius:2px;flex:none}
+  .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:15px;flex:none}
+  .nm{font-size:15px;font-weight:600;flex:1}
+  .amt{font-family:var(--fn);font-variant-numeric:tabular-nums;font-size:18px;font-weight:600;letter-spacing:-.02em}
+  .btn{min-height:var(--tap);border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:var(--fb);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+  .btn.primary{background:var(--accent);color:#12131A;border-color:var(--accent);letter-spacing:.28em;text-indent:.28em}
+  .btn.ghost{background:transparent}
+  .who{min-height:var(--tap);border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;font-weight:600;color:var(--dim)}
+  .who.on{color:var(--text)}
+  .chip{min-height:44px;padding:0 13px;border-radius:var(--pill);border:1px solid var(--border);background:transparent;color:var(--dim);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+  .chip.on{background:var(--surface-2);color:var(--text);border-color:transparent;font-weight:600}
+  .pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .key{height:58px;border-radius:12px;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center;font-family:var(--fn);font-size:21px;font-weight:500;color:var(--text)}
+  .key.act{background:var(--surface-2);border-color:transparent;color:var(--accent)}
+  .rc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}
+  .rc-h{padding:13px 16px 12px;display:flex;align-items:baseline;justify-content:space-between}
+  .tearwrap{position:relative;height:16px;display:flex;align-items:center}
+  .tearwrap::before,.tearwrap::after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:var(--bg);top:1px}
+  .tearwrap::before{left:-8px} .tearwrap::after{right:-8px}
+  .tear{flex:1;height:1px;background:repeating-linear-gradient(90deg,var(--border) 0 5px,transparent 5px 11px)}
+  .rc-b{padding:12px 16px 15px;display:flex;flex-direction:column;gap:11px}
+  .rc-l{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .rc-l .nm{font-size:14px;font-weight:500;color:var(--text)}
+  .foot{display:flex;justify-content:space-between;padding:18px 20px 0;margin-top:auto}
+  .foot span{font-size:14px;color:var(--dim);display:flex;align-items:center;gap:6px}
+  .divider{height:1px;background:var(--border);margin:22px 20px}
+  .field{height:var(--tap);border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px}
+  .field input{all:unset;flex:1;font-family:var(--fb);font-size:16px;color:var(--text)}
+  .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:5px}
+  .seg > div{min-height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:600;color:var(--dim)}
+  .seg > div.on{background:var(--surface-2);color:var(--text)}
+</style>
+</helmet>
+<div class="phone" style="min-height:844px">
+  <div class="bar"><h1>새 판</h1><span class="meta">3인</span></div>
+
+  <div class="sect">
+    <p class="label">몇 명이서</p>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
+      <div class="chip num">2</div>
+      <div class="chip on num">3</div>
+      <div class="chip num">4</div>
+      <div class="chip num">5</div>
+    </div>
+  </div>
+
+  <div class="sect" style="display:flex;flex-direction:column;gap:8px;margin-top:24px">
+    <p class="label">누가 치나요<span style="font-size:12px">아바타를 눌러 바꿔요</span></p>
+    <div class="field"><div class="av" style="background:#4DA3FF22">🐶</div><input value="재호"></div>
+    <div class="field"><div class="av" style="background:#FFB84D22">🐱</div><input value="철수"></div>
+    <div class="field"><div class="av" style="background:#B47DFF22">🐰</div><input value="영희"></div>
+    <div class="field" style="opacity:.3;border-style:dashed">
+      <div class="av" style="background:#35D6C422">🦊</div>
+      <span style="font-size:15px;color:var(--dim);flex:1">4명을 고르면 여기</span>
+    </div>
+  </div>
+
+  <div class="sect" style="margin-top:26px">
+    <p class="label">무슨 게임</p>
+    <div class="seg">
+      <div class="on">🎴 고스톱</div><div>♠️ 포커</div><div>🃏 훌라</div>
+    </div>
+  </div>
+
+  <div class="sect" style="margin-top:26px">
+    <p class="label">점당 금액</p>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
+      <div class="chip on num">100</div>
+      <div class="chip num">500</div>
+      <div class="chip num">1,000</div>
+      <div class="chip">직접</div>
+    </div>
+    <p style="font-size:12px;color:var(--dim);margin:10px 2px 0">7점 한 판이면 두 사람에게 700원씩 받습니다</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="sect">
+    <div style="display:flex;align-items:center;justify-content:space-between;min-height:48px">
+      <span style="font-size:15px;font-weight:600">우리 룰 설정</span>
+      <span style="font-size:13px;color:var(--dim)">기본값으로 시작 ›</span>
+    </div>
+  </div>
+
+  <div class="sect" style="margin-top:auto;padding-top:28px">
+    <div class="btn primary" style="width:100%">시작</div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

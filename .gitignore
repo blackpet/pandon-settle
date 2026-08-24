@@ -16,3 +16,9 @@ package-lock.json
 .env
 .env.local
 .claude/
+
+# Playwright 확인용 산출물
+.playwright-mcp/
+
+# 디자인 캔버스 산출물 — .dc.html 과 canvas.json 에서 다시 시드된다
+docs/design/*-screens.html

@@ -1,0 +1,24 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "화면 시안" },
+    { "id": "page-2", "name": "디자인 시스템" }
+  ],
+  "artboards": [
+    { "file": "Home.dc.html",    "x": 0,    "y": 0,    "w": 390, "h": 844,  "page": "page-1", "title": "홈" },
+    { "file": "Setup.dc.html",   "x": 470,  "y": 0,    "w": 390, "h": 980,  "page": "page-1", "title": "새 판 세팅 · 인원 선택" },
+    { "file": "Main.dc.html",    "x": 940,  "y": 0,    "w": 390, "h": 1180, "page": "page-1", "title": "고스톱 입력 · 3인" },
+    { "file": "Gostop5.dc.html", "x": 1410, "y": 0,    "w": 390, "h": 1400, "page": "page-1", "title": "고스톱 입력 · 5인 (한 명 빠짐)" },
+    { "file": "Hoola.dc.html",   "x": 1880, "y": 0,    "w": 390, "h": 1120, "page": "page-1", "title": "훌라 입력" },
+    { "file": "Poker.dc.html",   "x": 0,    "y": 1540, "w": 390, "h": 844,  "page": "page-1", "title": "포커 입력" },
+    { "file": "Result.dc.html",  "x": 470,  "y": 1540, "w": 390, "h": 1360, "page": "page-1", "title": "정산" },
+    { "file": "Rules.dc.html",   "x": 940,  "y": 1540, "w": 390, "h": 1420, "page": "page-1", "title": "우리 룰" },
+    { "file": "History.dc.html", "x": 1410, "y": 1540, "w": 390, "h": 844,  "page": "page-1", "title": "판 기록" },
+    { "file": "System.dc.html",     "x": 0,    "y": 0, "w": 1240, "h": 1780, "page": "page-2", "title": "토큰 · 글꼴 · 치수" },
+    { "file": "Components.dc.html", "x": 1360, "y": 0, "w": 1240, "h": 1560, "page": "page-2", "title": "컴포넌트 · 상태" }
+  ],
+  "annotations": [
+    { "id": "note-flow", "x": 0, "y": -170, "w": 860, "text": "평범한 한 판: 승자 탭 → 점수 탭 → 확인. 배수 칩은 전부 꺼진 채로 시작한다.\n인원이 2명이든 5명이든 이 세 번은 그대로다 — 잔액 줄과 배수 칩 줄만 늘어난다.", "page": "page-1" },
+    { "id": "note-five", "x": 940, "y": -170, "w": 860, "text": "5인 화면은 4~5인에서만 나오는 것을 두 가지 보여준다: 잔액 줄이 다섯 개인 것과, 광 팔고 쉬는 사람을 표시하는 '빠짐' 칩. 빠진 사람은 잔액 줄이 흐려지고 이번 판 0원이 된다.", "page": "page-1" }
+  ],
+  "launch": { "view": "canvas", "page": "page-1" }
+}
