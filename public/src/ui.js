@@ -120,7 +120,9 @@ function balanceRow(p, v, i, bals, out = false) {
 }
 
 function whoButtons(selected, act = "pick") {
-  return `<div class="grid3">${st().players.map((p) => `
+  // 4명이면 3+1 로 떨어져 마지막 하나가 붕 뜬다. 2×2 가 눈에 낫다.
+  const cols = st().players.length === 4 ? 2 : 3;
+  return `<div style="display:grid;grid-template-columns:repeat(${cols},minmax(0,1fr));gap:8px">${st().players.map((p) => `
     <button class="who" data-act="${act}" data-id="${p.id}" aria-pressed="${selected === p.id}"
       style="${selected === p.id ? `border-color:${p.color};background:${p.color}1A` : ""}">
       <span aria-hidden="true">${esc(p.emoji)}</span> <span>${esc(p.name)}</span>

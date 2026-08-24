@@ -39,7 +39,17 @@ html, body {
   overscroll-behavior-y: contain;
 }
 
-body { padding-bottom: env(safe-area-inset-bottom); }
+/*
+ * 홈 화면에 추가하면 상태바(다이나믹 아일랜드 포함) 아래까지 웹뷰가 올라온다
+ * — viewport-fit=cover + black-translucent 조합. 네 방향 안전영역을 전부 비켜준다.
+ * 위를 빠뜨리면 첫 줄이 시계와 배터리에 그대로 가린다.
+ */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+}
 
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
 input  { font: inherit; color: inherit; }
@@ -174,7 +184,8 @@ input  { font: inherit; color: inherit; }
 .warn p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; }
 
 .toast {
-  position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: calc(28px + env(safe-area-inset-bottom));
   background: var(--surface-2); border-radius: var(--pill); padding: 12px 18px;
   font-size: 13px; display: flex; align-items: center; gap: 8px; z-index: 10;
   box-shadow: 0 8px 24px rgba(0, 0, 0, .5); animation: rise 160ms ease;
