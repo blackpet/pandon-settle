@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-label="판돈정산">
+  <rect width="192" height="192" rx="42" fill="#12131A"/>
+  <path d="M12 96h168" stroke="#2A2D3A" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="14 11"/>
+  <rect x="41" y="46" width="22" height="50" rx="11" fill="#4DA3FF"/>
+  <rect x="85" y="96" width="22" height="37" rx="11" fill="#FFB84D"/>
+  <rect x="129" y="96" width="22" height="58" rx="11" fill="#B47DFF"/>
+</svg>

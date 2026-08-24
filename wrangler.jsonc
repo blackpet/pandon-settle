@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // 저장소는 pandon-settle 이지만 Worker 이름은 짧게 간다 — 이 이름이 그대로 주소가 된다
+  // (pandon.blackpet.workers.dev). workers.dev 는 {worker}.{계정}.workers.dev 3단계라
+  // 계정 서브도메인을 뺄 수 없어서, 줄일 수 있는 건 이 한 칸뿐이다.
+  "name": "pandon",
+  // 프로젝트를 만든 날로 한 번 박고 그 뒤로 건드리지 않는다. 이 값을 올릴 때마다
+  // 런타임 동작이 달라질 수 있어서, 재배포가 코드 변경 없이 결과를 바꾸게 된다.
+  "compatibility_date": "2026-08-24",
+
+  "assets": {
+    "directory": "./public",       // 이 폴더만 세상에 나간다
+    "not_found_handling": "none"   // 화면 전환이 페이지 안에서 일어나 라우팅이 없다
+  },
+
+  // 도메인 없이 관리형 HTTPS 주소를 받는다.
+  // 서비스 워커(오프라인 동작)는 HTTPS에서만 도므로 이게 PWA의 필수 조건이다.
+  "workers_dev": true,
+  // 버전마다 영구 주소가 생기면 되돌린 뒤에도 옛 판이 계속 열린다.
+  "preview_urls": false,
+
+  // 두 false 는 로그 양 조절이 아니라 방문 기록을 남기지 않겠다는 설정이다.
+  "observability": {
+    "enabled": true,
+    "logs": { "invocation_logs": false },
+    "traces": { "enabled": false }
+  }
+}
