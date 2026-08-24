@@ -1,0 +1,17 @@
+{
+  "name": "pandon-settle",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "친구 3명 판돈 정산 웹앱 (고스톱·포커·훌라)",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "serve": "npx serve public",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.121.0"
+  }
+}
