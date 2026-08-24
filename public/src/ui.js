@@ -148,6 +148,17 @@ function receipt(deltas, title, note) {
   </div>`;
 }
 
+/** 어느 화면에서든 판돈·룰·새로고침에 닿는 길. 헤더 오른쪽 끝에 항상 있다. */
+const moreBtn = `<button class="more" data-act="go" data-screen="menu" aria-label="더보기">⋯</button>`;
+
+const presetsFor = (game) => (game === "hoola" ? [10, 50, 100] : [100, 500, 1000]);
+
+let updateReady = false;
+const updateBanner = () => updateReady ? `<div class="update" role="status">
+    <span><b>새 버전이 준비됐어요</b></span>
+    <button data-act="reload">지금 켜기</button>
+  </div>` : "";
+
 const warnBanner = () => store.saveBlocked ? `<div class="warn" role="alert">
     <b>저장이 꺼져 있습니다</b>
     <p>브라우저가 저장을 막고 있어요. 지금 판은 계속 칠 수 있지만 앱을 닫으면 사라집니다.
@@ -158,7 +169,7 @@ const warnBanner = () => store.saveBlocked ? `<div class="warn" role="alert">
 function homeScreen() {
   const has = store.hasGame();
   const bals = has ? store.balances() : [];
-  return `${warnBanner()}
+  return `${updateBanner()}${warnBanner()}
   <div style="padding:88px 20px 0;text-align:center">
     <div style="font-size:34px" aria-hidden="true">🎴🪙</div>
     <h1 style="font-family:var(--fd);font-weight:700;font-size:34px;letter-spacing:.22em;text-indent:.22em;margin:20px 0 0">판돈정산</h1>
@@ -180,7 +191,10 @@ function homeScreen() {
     ${has ? `<button class="btn ghost" data-act="resume">이어서 하기</button>` : ""}
     <button class="btn primary" data-act="go" data-screen="setup">새 판 시작</button>
   </div>
-  ${has ? `<p class="hint" style="text-align:center;margin-top:22px">새 판을 시작하면 지금 판은 사라집니다</p>` : ""}`;
+  ${has ? `<p class="hint" style="text-align:center;margin-top:22px">새 판을 시작하면 지금 판은 사라집니다</p>` : ""}
+  <div class="foot" style="justify-content:center;margin-top:8px">
+    <button data-act="go" data-screen="menu">더보기 ⋯</button>
+  </div>`;
 }
 
 // ── 화면: 세팅 ──────────────────────────────────────────────────────
@@ -202,7 +216,7 @@ function setupScreen() {
   if (!setup) initSetup();
   const pv = setup.pv[setup.game];
   const presets = setup.game === "hoola" ? [10, 50, 100] : [100, 500, 1000];
-  return `${warnBanner()}
+  return `${updateBanner()}${warnBanner()}
   <div class="bar"><h1>새 판</h1><span class="meta">${setup.count}명</span></div>
 
   <div class="sect">
@@ -261,13 +275,16 @@ function playScreen() {
   const deltas = previewDeltas();
   const game = st().game;
 
-  return `${warnBanner()}
+  return `${updateBanner()}${warnBanner()}
   <div class="bar">
     <h1>${st().rounds.length + 1}판째</h1>
-    <button class="meta" data-act="switch" style="min-height:44px"
-      aria-label="게임 바꾸기. 지금은 ${gameName(game)}">
-      ${gameName(game)} ▾ · ${N()}명 · 점당 ${comma(st().pointValue[game])}원
-    </button>
+    <span class="bar-r">
+      <button class="meta" data-act="switch" style="min-height:44px"
+        aria-label="게임 바꾸기. 지금은 ${gameName(game)}">
+        ${gameName(game)} ▾ · ${N()}명 · 점당 ${comma(st().pointValue[game])}원
+      </button>
+      ${moreBtn}
+    </span>
   </div>
 
   <div class="sect stack">
@@ -448,7 +465,7 @@ function resultScreen() {
   const total = moves.reduce((a, m) => a + m.amount, 0);
   const stats = statsOf();
 
-  return `${warnBanner()}
+  return `${updateBanner()}${warnBanner()}
   <div style="padding:26px 20px 0;text-align:center">
     <p class="meta" style="margin:0">${dayLabel()} · ${playedLabel()} ${st().rounds.length}판</p>
     <h1 style="font-family:var(--fd);font-weight:700;font-size:26px;letter-spacing:.06em;margin:10px 0 0">오늘의 결과</h1>
@@ -501,7 +518,10 @@ function resultScreen() {
     <button class="btn primary" data-act="share">텍스트로 공유</button>
     <button class="btn ghost" data-act="go" data-screen="play">계속 치기</button>
   </div>
-  <div class="foot"><button data-act="go" data-screen="home">‹ 홈</button><span></span></div>`;
+  <div class="foot">
+    <button data-act="go" data-screen="home">‹ 홈</button>
+    <button data-act="go" data-screen="menu">더보기 ⋯</button>
+  </div>`;
 }
 
 function statsOf() {
@@ -561,8 +581,9 @@ function shareText() {
 // ── 화면: 판 기록 ───────────────────────────────────────────────────
 function historyScreen() {
   const rounds = st().rounds;
-  return `${warnBanner()}
-  <div class="bar"><h1>판 기록</h1><span class="meta">${rounds.length}판</span></div>
+  return `${updateBanner()}${warnBanner()}
+  <div class="bar"><h1>판 기록</h1>
+    <span class="bar-r"><span class="meta">${rounds.length}판</span>${moreBtn}</span></div>
   ${rounds.length === 0 ? `<div class="sect"><div class="empty">
       <div class="big" aria-hidden="true">🎴</div>
       <h2>아직 한 판도 안 쳤어요</h2>
@@ -624,19 +645,18 @@ const ruleRow = (name, hint, control) => `<div class="bal rule">
 
 function rulesScreen() {
   const g = st().rules.gostop, h = st().rules.hoola, p = st().rules.poker;
-  return `${warnBanner()}
-  <div class="bar"><h1>우리 룰</h1><span class="meta">모임마다 다르니까</span></div>
+  return `${updateBanner()}${warnBanner()}
+  <div class="bar"><h1>우리 룰</h1>
+    <span class="bar-r"><span class="meta">모임마다 다르니까</span>${moreBtn}</span></div>
   <div class="sect"><p class="hint" style="margin:0 0 18px;line-height:1.6">여기서 바꾼 값은
     <b style="color:var(--text)">다음 판부터</b> 적용됩니다. 이미 끝난 판의 금액은 그대로예요.</p></div>
 
   ${store.hasGame() ? `<div class="sect">
-    <p class="label">점당 금액<span class="hint">지금 치는 ${gameName(st().game)} 기준</span></p>
-    <div class="grid4">
-      ${(st().game === "hoola" ? [10, 50, 100] : [100, 500, 1000]).map((v) =>
-        chip(comma(v), st().pointValue[st().game] === v, "rule-pv", { v }, "num")).join("")}
-      ${chip("직접", ![...(st().game === "hoola" ? [10, 50, 100] : [100, 500, 1000])]
-        .includes(st().pointValue[st().game]), "rule-pv-custom")}
-    </div>
+    <button class="btn ghost" data-act="go" data-screen="menu"
+      style="justify-content:space-between;padding:0 16px">
+      <span>판돈 바꾸기</span>
+      <span class="hint">점당 ${comma(st().pointValue[st().game])}원 ›</span>
+    </button>
   </div>` : ""}
 
   <div class="sect mt">
@@ -683,8 +703,49 @@ function rulesScreen() {
   <div class="foot"><button data-act="rule-back">‹ 돌아가기</button><span></span></div>`;
 }
 
+// ── 화면: 더보기 ────────────────────────────────────────────────────
+function menuScreen() {
+  const game = st().game;
+  const pv = st().pointValue[game];
+  const playing = store.hasGame();
+
+  return `${updateBanner()}${warnBanner()}
+  <div class="bar"><h1>더보기</h1>
+    <span class="meta">${st().rounds.length ? `${st().rounds.length}판 진행중` : ""}</span></div>
+
+  ${playing ? `<div class="sect">
+    <p class="label">판돈<span class="hint">${gameName(game)} 점당 · 다음 판부터</span></p>
+    <div class="grid4">
+      ${presetsFor(game).map((v) => chip(comma(v), pv === v, "pv-set", { v }, "num")).join("")}
+      ${chip("직접", !presetsFor(game).includes(pv), "pv-ask")}
+    </div>
+    <p class="hint" style="margin:10px 2px 0">${game === "hoola"
+      ? `남은 점수 23점이면 ${comma(23 * pv)}원을 냅니다`
+      : `7점 한 판이면 진 사람마다 ${comma(7 * pv)}원씩 받습니다`} ·
+      이미 끝난 판의 금액은 그대로예요</p>
+  </div>` : ""}
+
+  <div class="sect mt">
+    <div class="menu">
+      <button data-act="go" data-screen="rules">우리 룰 설정<span class="sub">피박·독박 배수 ›</span></button>
+      ${playing ? `<button data-act="go" data-screen="history">판 기록<span class="sub">${st().rounds.length}판 ›</span></button>` : ""}
+      <button data-act="reload">앱 새로고침<span class="sub">최신 버전 받기</span></button>
+      ${playing ? `<button data-act="go" data-screen="home">홈으로<span class="sub">판은 그대로 ›</span></button>` : ""}
+    </div>
+  </div>
+
+  <div class="sect mt">
+    <p class="hint" style="text-align:center;line-height:1.7">
+      화면을 아래로 당겨도 새로고침됩니다.<br>
+      새로고침해도 <b style="color:var(--text)">지금 판은 지워지지 않습니다.</b></p>
+  </div>
+
+  <div class="foot"><button data-act="menu-back">‹ 돌아가기</button><span></span></div>`;
+}
+
 // ── 렌더 ────────────────────────────────────────────────────────────
-const SCREENS = { home: homeScreen, setup: setupScreen, play: playScreen, result: resultScreen, history: historyScreen, rules: rulesScreen };
+const SCREENS = { home: homeScreen, setup: setupScreen, play: playScreen,
+  result: resultScreen, history: historyScreen, rules: rulesScreen, menu: menuScreen };
 let prevBalances = [];
 
 function captureFocus() {
@@ -842,12 +903,14 @@ app.addEventListener("click", (e) => {
       const v = el.dataset.v === "" ? null : Number(el.dataset.v);
       return store.setRule("gostop", "scoreCap", v);
     }
-    case "rule-pv": return store.setPointValue(st().game, Number(el.dataset.v));
-    case "rule-pv-custom": {
+    case "pv-set": return store.setPointValue(st().game, Number(el.dataset.v));
+    case "pv-ask": {
       const v = prompt("점당 얼마로 할까요? (원)", String(st().pointValue[st().game]));
       if (v !== null && digitsOf(v) > 0) store.setPointValue(st().game, digitsOf(v));
       return;
     }
+    case "menu-back": return store.setScreen(store.hasGame() ? "play" : "home");
+    case "reload": return hardReload();
     case "dokmode": return store.setRule("hoola", "dokbakMode", el.dataset.v);
     case "oddto": return store.setRule("poker", "oddTo", el.dataset.v);
     case "rule-reset": {
@@ -886,6 +949,25 @@ app.addEventListener("input", (e) => {
   if (el.dataset.act === "amount") return patchTyping({ amount: digitsOf(el.value) });
 });
 
+/**
+ * 홈 화면에 추가하면 주소창이 없어 새로고침할 방법이 사라진다.
+ * 캐시를 비우고 다시 받되 localStorage 는 건드리지 않는다 — 판 기록이 날아가면 안 된다.
+ * 오프라인일 때 캐시를 지우면 앱이 아예 안 뜨므로 그때는 다시 읽기만 한다.
+ */
+async function hardReload() {
+  try {
+    if (navigator.onLine) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((k) => caches.delete(k)));
+      const regs = (await navigator.serviceWorker?.getRegistrations?.()) ?? [];
+      await Promise.all(regs.map((r) => r.update()));
+    }
+  } catch {
+    // 캐시를 못 지워도 새로고침은 한다
+  }
+  location.reload();
+}
+
 async function share() {
   const text = shareText();
   try {
@@ -901,5 +983,21 @@ store.subscribe(render);
 render();
 
 if ("serviceWorker" in navigator) {
-  addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+  addEventListener("load", async () => {
+    try {
+      const reg = await navigator.serviceWorker.register("./sw.js");
+      reg.addEventListener("updatefound", () => {
+        const sw = reg.installing;
+        sw?.addEventListener("statechange", () => {
+          // controller 가 이미 있다는 건 첫 설치가 아니라 갱신이라는 뜻이다
+          if (sw.state === "installed" && navigator.serviceWorker.controller) {
+            updateReady = true;
+            render();
+          }
+        });
+      });
+    } catch {
+      // 서비스워커가 없어도 앱은 돈다. 오프라인만 안 될 뿐이다.
+    }
+  });
 }
